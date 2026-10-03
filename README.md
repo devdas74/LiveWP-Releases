@@ -1,37 +1,128 @@
 # LiveWP
 
-**LiveWP** is an Android live wallpaper app by **Davesya**, designed for photo and video wallpapers with motion effects and a simple wallpaper-setting experience.
+**LiveWP** is an Android live wallpaper app by **Davesya** for turning your photos and videos into live wallpapers, with native motion effects, video processing, performance controls, and a Floating Island-style runtime interface.
+
+## What is LiveWP?
+
+LiveWP combines a media-preparation system with a native Android live-wallpaper engine.
+
+Choose a photo, video, or preset, prepare it for your device, and then set it as your Android live wallpaper. Photo wallpapers can respond to device movement, while video wallpapers use the dedicated video playback and processing path.
+
+## Features
+
+### 🖼️ Photo & Video Wallpapers
+- Use photos or videos from your device as live wallpapers.
+- Choose from bundled wallpaper presets.
+- Keep prepared wallpapers available for reuse.
+
+### ⚙️ Media Preparation & Optimization
+- Prepares selected media before it is applied to the wallpaper engine.
+- Adapts video output to the device display characteristics.
+- Handles wallpaper-oriented cropping, resolution, frame rate, bitrate, and compatible video conversion where possible.
+- Removes audio from prepared wallpaper videos.
+- Prepares large photos for suitable wallpaper dimensions while preserving transparency when needed.
+- Prepared media is cached locally so it can be reused without repeating preparation.
+
+### 🔄 Preparation Recovery
+- The original unprepared media is retained when preparation fails.
+- Failed media can be prepared again instead of being permanently discarded.
+- Successfully prepared media can be managed separately from the original gallery/preset source.
+
+### 🌀 Gyroscope Motion Effects
+Photo wallpapers support native device-motion effects with configurable controls for:
+- **2D gyro motion**
+- **3D gyro motion**
+- **Depth**
+- **X/Y sensitivity**
+- **Motion translation**
+- **Motion rotation**
+- **Zoom response**
+
+Video wallpapers bypass the photo wallpaper motion-effects path.
+
+### 🎯 Auto Stabilisation
+Photo motion includes automatic stabilization controls designed to smoothly return the wallpaper toward a stable position while helping maintain safe screen coverage.
+
+### 🔄 Orientation Controls
+Support for wallpaper media orientation at:
+- 0°
+- 90°
+- 180°
+- 270°
+
+### 🎞️ Frame Interpolation
+Video wallpapers include software frame interpolation controls.
+
+- FI is enabled by default for newly selected videos.
+- The user setting and actual renderer eligibility are handled separately.
+- The native renderer only generates intermediate frames when the source frame rate is suitable for the device display refresh rate.
+
+### ⏸️ Automatic Pause & Load Protection
+The native renderer can reduce rendering work or pause wallpaper processing when the wallpaper is not actively displayed or when sustained renderer load requires protection.
+
+Manual video pause is also supported.
+
+### 🏝️ Floating Island
+LiveWP includes a native Floating Island-style runtime overlay that can show wallpaper and renderer information such as:
+- Wallpaper state
+- Runtime status
+- FPS information
+- Frame interpolation state
+- Processing/status information
+
+The overlay operates independently of the main LiveWP interface.
+
+### 💡 Status LED
+The runtime status system provides visual state indication for wallpaper and motion activity, including states for:
+- Active wallpaper / working effects
+- Auto-pause
+- Manually disabled effects
+- Processing
+- Failed wallpaper application
+- Runtime errors
+
+### 🎨 Theme Support
+The app supports:
+- **System default**
+- **Dark**
+- **Light**
+
+### 🧰 Diagnostics & Event Recording
+Optional troubleshooting tools can record and inspect native wallpaper and runtime events, including engine, rendering, processing, and diagnostic information.
+
+These tools are intended for troubleshooting and are not required for normal wallpaper operation.
+
+## How to use
+
+1. Open **LiveWP**.
+2. Select a photo, video, or preset.
+3. Open **Live Stage**.
+4. Press **Prepare**.
+5. After successful preparation, press **Set as Wallpaper**.
+6. Complete Android's wallpaper confirmation step.
+
+Prepared media can be reused without repeating the preparation process.
+
+## Android compatibility
+
+LiveWP is designed for Android devices with live-wallpaper support. Availability and behavior can vary by Android version, device manufacturer, and vendor-specific restrictions.
+
+On some Xiaomi / POCO / HyperOS devices, the system may restrict or change how third-party live wallpapers are exposed or applied.
 
 ## Download
 
-Go to the **[Releases](https://github.com/devdas74/LiveWP-Releases/releases)** section and download the latest APK.
+This repository is the **official public distribution repository** for LiveWP.
 
-### Installing a release
+**[Download LiveWP from Releases](https://github.com/devdas74/LiveWP-Releases/releases)**
 
-1. Download the latest `.apk` file from **Releases**.
-2. Open the APK on your Android device.
-3. If Android asks for permission to install from that source, allow it.
-4. Install or update LiveWP.
+Current releases are provided as **beta builds**.
 
-> **Note:** LiveWP releases are currently provided as **beta builds**. Features and behavior may change between releases.
+## Repository & source code
 
-## What this repository contains
+This repository contains **release APKs and release information only**.
 
-This is the **official public distribution repository** for LiveWP.
+The LiveWP application source code and build system are maintained separately in a **private repository**.
 
-- 📦 APK releases
-- 📝 Release information
-- 🔒 No LiveWP source code
+## License
 
-The LiveWP source code and build system are maintained separately in a **private repository**.
-
-## Requirements
-
-LiveWP is an Android application. Compatibility may vary depending on the Android version, device manufacturer, and device-specific live-wallpaper restrictions.
-
-## About
-
-**LiveWP**  
-Android live wallpaper app by **Davesya**.
-
-The software is proprietary. No open-source license is granted by this repository.
+LiveWP is proprietary software. No open-source license is granted by this repository.
