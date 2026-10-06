@@ -109,6 +109,36 @@ LiveWP is designed for Android devices with live-wallpaper support. Availability
 
 On some Xiaomi / POCO / HyperOS devices, the system may restrict or change how third-party live wallpapers are exposed or applied.
 
+## What’s new
+
+The latest LiveWP update brings a major upgrade to video rendering, enhancement controls, and runtime status reporting.
+
+### 🚀 New Renderer System
+- Adds **Renderer 3.0** with modern OpenGL ES support.
+- **Auto** renderer selection can use the modern renderer when supported and fall back to the compatibility renderer when needed.
+- Renderer selection is available in the advanced diagnostic/runtime settings.
+
+### ✨ Smart Upscale
+- Adds **Smart Upscale (SU)** for lower-resolution video.
+- Supports **Snapdragon Game Super Resolution (SGSR)** on compatible Snapdragon/Adreno devices.
+- Includes a **Linear Sharpener** fallback for broader compatibility.
+- Adds adjustable SU quality/performance control up to **100%**.
+- SU activation is handled separately from simply enabling the feature, so the runtime can report when upscaling is actually active.
+
+### 🎞️ Improved Video Enhancements
+- Frame Interpolation (FI) and Smart Upscale can be controlled together from the video enhancement master control.
+- Runtime status distinguishes enabled enhancements from enhancements that are actively processing.
+- Video enhancement status can be reported to the Floating Island and status LED without depending on the expanded overlay remaining visible.
+
+### 🏝️ Improved Runtime Feedback
+- Floating Island now provides clearer video enhancement status information.
+- Status reporting includes active Smart Upscale backend information where available.
+- The runtime LED continues to provide compact health/status feedback while the wallpaper is running.
+
+### ⚡ Performance & Reliability
+- Video rendering and enhancement paths have received performance-oriented improvements.
+- Renderer and enhancement behavior are designed to adapt to device capabilities instead of assuming a single hardware path.
+
 ## Download
 
 This repository is the **official public distribution repository** for LiveWP.
