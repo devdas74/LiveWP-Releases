@@ -8,6 +8,24 @@ LiveWP combines a media-preparation system with a native Android live-wallpaper 
 
 Choose a photo, video, or preset, prepare it for your device, and then set it as your Android live wallpaper. Photo wallpapers can respond to device movement, while video wallpapers use the dedicated video playback and processing path.
 
+## Lightweight by Design
+
+LiveWP is built to offer advanced live-wallpaper features without keeping every processing path running all the time. The app continuously adapts its work to the device, the media being displayed, the current screen state, and actual renderer load. Features are activated only when their conditions are met, and power- or performance-heavy work is reduced or paused when it is not useful.
+
+The systems that help keep LiveWP lightweight include:
+
+- **Device-aware media preparation** — photos are downsampled to a suitable wallpaper size instead of keeping unnecessarily large images in memory; videos are cropped to the device aspect ratio, prepared at no more than the device's display resolution, capped to the device refresh rate, and given a resolution/FPS-appropriate bitrate.
+- **Efficient video preparation** — prepared videos have audio removed, use HEVC/H.265 when supported, and have an H.264/AVC fallback when HEVC conversion is not available.
+- **Preparation reuse and bounded cache** — already-prepared media is reused instead of being processed again, while the prepared-media cache is kept within a 200 MB limit by removing the oldest unprotected entries when necessary.
+- **Automatic Pause & Load Protection** — Auto Pause is a complete protection system, not just a single pause switch. It can stop rendering work when the wallpaper is not visible, when the battery is low, when Android Battery Saver is active, or when the renderer is under sustained strain. Under renderer strain, LiveWP first reduces its effective FPS, can temporarily bypass Smart Upscale, and only then enters a harder pause when necessary; it resumes after the renderer recovers.
+- **Selective Frame Interpolation** — FI does not constantly generate frames. It only becomes active when the measured source video FPS is suitable for the device refresh rate, with the source limited to roughly half the display refresh ceiling so generated frames can fit within that ceiling.
+- **Selective Smart Upscale** — SU only processes video when the prepared source resolution is below the wallpaper output size. It can also be temporarily bypassed automatically when sustained renderer load requires additional protection, without permanently changing the user's setting.
+- **Adaptive renderer selection** — Auto renderer mode can choose the modern OpenGL ES path when supported and fall back to the compatibility path when necessary instead of forcing one rendering path on every device.
+- **Media-specific processing** — photo wallpapers use the motion-effects path, while video wallpapers bypass the photo motion-effects path, avoiding unnecessary gyro processing for video playback.
+- **Optional diagnostics** — Event recording and diagnostic telemetry are opt-in tools and are not required for normal wallpaper operation.
+
+These systems mean that LiveWP's feature list represents available capabilities, not a requirement for every device to run every effect continuously.
+
 ## Features
 
 ### 🖼️ Photo & Video Wallpapers
