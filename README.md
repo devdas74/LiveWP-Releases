@@ -8,7 +8,6 @@ This repository distributes public release APKs. The application source code and
 
 ### 🖼️ Photo and Video Wallpapers
 - Use a photo or video from your device as a live wallpaper.
-- Choose from bundled wallpaper presets.
 - Search the web for portrait wallpaper photos.
 - Preview media in **Live Stage** before applying it.
 - Reuse media that has already been prepared.
@@ -61,7 +60,7 @@ The wallpaper engine can reduce rendering work or pause processing when the wall
 ## How to set a wallpaper
 
 1. Open **LiveStagix**.
-2. Select a photo, video, or preset.
+2. Select a photo or video from your device, or find a photo using web wallpaper search.
 3. Open **Live Stage**.
 4. Press **Prepare** and let preparation finish.
 5. Press **Set as Wallpaper**.
