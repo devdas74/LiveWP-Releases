@@ -72,7 +72,7 @@ Prepared media can be reused without repeating preparation.
 
 LiveStagix is designed for Android devices that support live wallpapers. Availability and behaviour can vary by Android version, device manufacturer, and vendor-specific restrictions.
 
-On some Xiaomi, POCO, and HyperOS devices, system restrictions may change how third-party live wallpapers appear in the wallpaper selector or how they are applied.
+On some Xiaomi, POCO, and HyperOS devices, system restrictions may change how third-party live wallpapers appear in the wallpaper selector or how they are applied. When replacing an existing LiveStagix wallpaper, your current Lock screen wallpaper may also be removed, so you may need to set your preferred Lock screen wallpaper again afterward.
 
 ## 🔮 Coming Soon
 
