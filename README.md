@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>Make your screen move.</strong><br>
-  Photo and video live wallpapers, with motion controls and device-aware media preparation.
+  Photo and video live wallpapers, motion controls, device-aware preparation and built-in media tuning.
 </p>
 
 <p align="center">
@@ -23,16 +23,17 @@
 
 ## Your wallpaper, your way
 
-LiveStagix turns photos and videos into live wallpapers and gives you tools to prepare, position and personalize them.
+LiveStagix turns photos and videos into live wallpapers and gives you tools to prepare, frame and personalize them.
 
 - **Photos and videos:** preview your selection in Live Stage before applying it.
-- **Custom framing:** adjust the crop, then prepare media for your device's display.
+- **Device-aware preparation:** adjust crop and framing, then prepare media for your device's display and supported media capabilities.
 - **Prepare and reuse:** keep prepared wallpapers in your library instead of repeating the same preparation.
+- **Prepared media details:** review image dimensions and file information, plus video codec, frame rate and bitrate when available.
 - **Find a photo:** search the web for portrait wallpaper images directly from Controls.
 
 ## Motion that responds to you
 
-Photo wallpapers can use gyroscope-based effects, including 2D pan, 3D tilt and depth, and Z-axis rotation. Edge safety helps protect the edges while the image moves, and quick presets make it easier to tune sensitivity and stabilization.
+Photo wallpapers can use gyroscope-based effects, including 2D pan, 3D tilt and depth, and Z-axis rotation. Edge Safety helps protect the edges while the image moves, and quick presets make it easier to tune sensitivity and stabilization. Motion controls are photo-focused; video wallpapers bypass gyro motion.
 
 <details>
   <summary><strong>View the motion controls screenshot</strong></summary>
@@ -43,7 +44,9 @@ Photo wallpapers can use gyroscope-based effects, including 2D pan, 3D tilt and 
 
 ## Video enhancements and rendering
 
-On supported devices, video wallpapers can use **Frame Interpolation** for smoother motion and **Smart Upscale** for enhancement. Choose **Auto**, **Modern** or **Compatibility** rendering; the renderer that is actually active may differ from the requested setting when device support requires it.
+On supported devices, video wallpapers can use **Frame Interpolation** for smoother motion and **Smart Upscale** for enhancement. These features depend on device support and runtime conditions, so an enabled setting does not guarantee that processing stays active at all times.
+
+Choose **Auto**, **Modern** or **Compatibility** rendering. Advanced Settings shows both the **requested** renderer and the renderer currently **active**; they may differ when the selected path is unavailable.
 
 Features and performance vary with Android version, graphics hardware, supported codecs and runtime conditions.
 
@@ -54,24 +57,37 @@ Features and performance vary with Android version, graphics hardware, supported
   </p>
 </details>
 
+## Tune prepared photos and videos
+
+LiveStagix includes a built-in **Media Tuner** for prepared media. In Live Stage, open the sliders control to tune the prepared photo or video.
+
+- **Light:** Brightness, Contrast, Highlights and Shadows.
+- **Color:** Saturation and Temperature.
+- **Details:** Denoise, Structure and Sharpness.
+
+Use **Before** to compare the adjustments with the unadjusted media by pressing and holding it. Closing the tuner keeps pending adjustments, so you can return to the stage without losing them. Tap **Apply** to create a separate tuned prepared copy; the existing prepared version is preserved, and the wallpaper that is already active is not changed automatically.
+
 ## Updating a wallpaper that's already active
 
 When LiveStagix is already the active wallpaper, applying new prepared media first attempts to update its content in place. When that succeeds, the wallpaper changes without reopening Android's wallpaper preview.
 
-If an in-place update fails, LiveStagix automatically retries up to **three times**, with a short pause between attempts. If all three fail, it falls back to the established wallpaper replacement flow and opens Android's wallpaper preview and confirmation.
+If an in-place update fails, LiveStagix retries up to **three times**, with a short pause between attempts. If all three fail, it falls back to the established wallpaper replacement flow and opens Android's wallpaper preview and confirmation.
 
 ## Get started
 
 1. [Download the latest APK](https://github.com/devdas74/LiveWP-Releases/releases/latest) and install it.
 2. Open LiveStagix and choose a photo or video. You can also search for a photo from Controls.
-3. Switch to **Live Stage** and tap **Prepare**.
-4. When preparation completes, tap **Set as Wallpaper**.
+3. Switch to **Live Stage**, adjust the framing if needed, and tap **Prepare**.
+4. After preparation, use the tuner to create a tuned copy if desired, or tap **Set as Wallpaper**.
 5. For first-time setup or replacement, complete Android's wallpaper preview and confirmation.
 
 ## Frequently asked questions
 
 **Why are some controls unavailable?**  
 Motion controls are intended for photo wallpapers; video enhancements are intended for video wallpapers. Other options depend on your device's capabilities.
+
+**Does tuning overwrite my prepared media?**  
+No. Applying tuning creates a separate prepared version. The tuner also prevents direct tuning of the wallpaper currently active in Android.
 
 **Will every phone support the same enhancements?**  
 No. Android version, graphics hardware, codecs and runtime load affect which paths can be used and how well they perform.
