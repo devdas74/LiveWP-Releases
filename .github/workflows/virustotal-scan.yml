@@ -33,27 +33,18 @@ jobs:
       - name: Validate scanner script syntax
         run: python3 -m py_compile .github/scripts/virustotal_scan.py
 
-      - name: Check whether VirusTotal API key is configured
-        id: api-key
-        shell: bash
-        env:
-          VT_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
-        run: |
-          if [[ -n "$VT_API_KEY" ]]; then
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::VirusTotal scanning is not configured. Add the VIRUSTOTAL_API_KEY Actions secret to enable automatic scans."
-          fi
+      - name: Set up Android SDK Build Tools for APK signature verification
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'build-tools;35.0.0'
 
-      - name: Verify APK, submit to VirusTotal and save report metadata
-        if: steps.api-key.outputs.configured == 'true'
+      - name: Verify APK identity and retrieve VirusTotal report when authorised
         env:
           VT_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
         run: python3 .github/scripts/virustotal_scan.py
 
-      - name: Publish scan metadata on Stable
-        if: success() && steps.api-key.outputs.configured == 'true'
+      - name: Publish release verification and scan metadata on Stable
+        if: success()
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
