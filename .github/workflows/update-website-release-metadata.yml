@@ -41,6 +41,7 @@ jobs:
 
             const metadata = {
               schema_version: 1,
+              metadata_source: "LiveWP-Releases release workflow",
               repository: `${owner}/${repo}`,
               tag_name: release.tag_name,
               name: release.name || release.tag_name,
