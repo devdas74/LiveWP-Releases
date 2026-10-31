@@ -23,6 +23,14 @@ MAX_POLL_ATTEMPTS = 18
 POLL_INTERVAL_SECONDS = 20
 
 
+class HttpRequestError(RuntimeError):
+    """HTTP error that retains the response status for controlled retry logic."""
+
+    def __init__(self, status_code, message):
+        super().__init__(message)
+        self.status_code = status_code
+
+
 def request_bytes(url, method="GET", data=None, headers=None):
     request_headers = {"User-Agent": "LiveStagix-Security-Scan/1.0"}
     if headers:
@@ -36,7 +44,9 @@ def request_bytes(url, method="GET", data=None, headers=None):
         if exc.code == 429:
             retry_after = exc.headers.get("Retry-After", "not supplied")
             raise RuntimeError(f"VirusTotal rate limit reached; Retry-After: {retry_after}") from exc
-        raise RuntimeError(f"HTTP {exc.code} for {url}: {detail[:500]}") from exc
+        raise HttpRequestError(
+            exc.code, f"HTTP {exc.code} for {url}: {detail[:500]}"
+        ) from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(f"Network request failed for {url}: {exc.reason}") from exc
 
@@ -158,10 +168,22 @@ def submit_file(api_key, content):
 
 def wait_for_analysis(api_key, analysis_id):
     url = VT_API + "/analyses/" + urllib.parse.quote(analysis_id, safe="")
+    saw_not_found = False
 
     for attempt in range(1, MAX_POLL_ATTEMPTS + 1):
         time.sleep(POLL_INTERVAL_SECONDS)
-        response = request_json(url, headers={"x-apikey": api_key})
+        try:
+            response = request_json(url, headers={"x-apikey": api_key})
+        except HttpRequestError as exc:
+            if exc.status_code == 404:
+                saw_not_found = True
+                print(
+                    "VirusTotal has not made this analysis ID available yet "
+                    f"(HTTP 404; attempt {attempt}/{MAX_POLL_ATTEMPTS}). Retrying."
+                )
+                continue
+            raise
+
         status = response.get("data", {}).get("attributes", {}).get("status")
         print(f"VirusTotal analysis status: {status or 'unknown'} ({attempt}/{MAX_POLL_ATTEMPTS})")
 
@@ -170,6 +192,12 @@ def wait_for_analysis(api_key, analysis_id):
         if status not in ("queued", "in-progress", "in_progress", None):
             raise RuntimeError(f"Unexpected VirusTotal analysis status: {status}")
 
+    if saw_not_found:
+        raise RuntimeError(
+            "VirusTotal accepted the APK upload but did not make the returned analysis "
+            "ID available within the polling window. No scan result was published. "
+            "Check the file's VirusTotal page before manually retrying to avoid duplicate submissions."
+        )
     raise RuntimeError("VirusTotal analysis did not finish within the polling window.")
 
 
