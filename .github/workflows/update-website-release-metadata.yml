@@ -1,0 +1,117 @@
+name: Update website release metadata
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: livestagix-website-release-metadata
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish latest APK metadata to the website
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Read latest published APK release
+        id: metadata
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const { owner, repo } = context.repo;
+            const { data: release } = await github.rest.repos.getLatestRelease({
+              owner,
+              repo
+            });
+
+            const asset = Array.isArray(release.assets)
+              ? release.assets.find((item) => item.name === "LiveStagix_beta.apk")
+              : null;
+
+            if (!asset) {
+              throw new Error("The latest published release does not contain LiveStagix_beta.apk. Website metadata was not changed.");
+            }
+
+            const metadata = {
+              schema_version: 1,
+              repository: `${owner}/${repo}`,
+              tag_name: release.tag_name,
+              name: release.name || release.tag_name,
+              published_at: release.published_at || release.created_at,
+              html_url: release.html_url,
+              asset: {
+                name: asset.name,
+                size: asset.size,
+                digest: asset.digest || null
+              }
+            };
+
+            core.setOutput("json", JSON.stringify(metadata));
+            core.info(`Prepared website metadata for ${release.tag_name}.`);
+
+      - name: Update release.json in the website repository
+        uses: actions/github-script@v7
+        env:
+          WEBSITE_REPO_TOKEN: ${{ secrets.WEBSITE_REPO_TOKEN }}
+          RELEASE_METADATA_JSON: ${{ steps.metadata.outputs.json }}
+        with:
+          github-token: ${{ secrets.WEBSITE_REPO_TOKEN || github.token }}
+          script: |
+            if (!process.env.WEBSITE_REPO_TOKEN) {
+              core.warning("WEBSITE_REPO_TOKEN is not configured. Add a fine-grained token with Contents: Read and write access to LiveStagix/livestagix.github.io, then save it as this repository's WEBSITE_REPO_TOKEN Actions secret. No website files were changed.");
+              return;
+            }
+
+            const owner = "LiveStagix";
+            const repo = "livestagix.github.io";
+            const path = "release.json";
+            const branch = "main";
+            const metadata = JSON.parse(process.env.RELEASE_METADATA_JSON);
+            const content = JSON.stringify(metadata, null, 2) + "\n";
+
+            let sha;
+            let existingContent = "";
+
+            try {
+              const { data } = await github.rest.repos.getContent({
+                owner,
+                repo,
+                path,
+                ref: branch
+              });
+
+              if (Array.isArray(data) || data.type !== "file") {
+                throw new Error("release.json resolved to something other than a file.");
+              }
+
+              sha = data.sha;
+              existingContent = Buffer.from(data.content, "base64").toString("utf8");
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+
+            if (existingContent === content) {
+              core.info("Website release.json is already up to date.");
+              return;
+            }
+
+            const update = {
+              owner,
+              repo,
+              path,
+              branch,
+              message: `Update website release metadata for ${metadata.tag_name}`,
+              content: Buffer.from(content, "utf8").toString("base64")
+            };
+
+            if (sha) update.sha = sha;
+
+            await github.rest.repos.createOrUpdateFileContents(update);
+            core.info(`Updated ${owner}/${repo}/${path} for ${metadata.tag_name}.`);
